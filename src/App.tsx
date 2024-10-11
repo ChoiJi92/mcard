@@ -1,33 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Alert from './components/shared/Alert'
+import Button from './components/shared/Button'
+import Text from './components/shared/Text'
+import { useAlertContext } from './contexts/AlertContext'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { open } = useAlertContext()
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <Text typography="t1">t1</Text>
+      <Text typography="t2">t2</Text>
+      <Text typography="t3">t3</Text>
+      <Text typography="t4">t4</Text>
+      <Text typography="t5">t5</Text>
+      <Text typography="t6">t6</Text>
+      <Text typography="t7">t7</Text>
+
+      <Button
+        onClick={() => {
+          open({
+            title: '카드신청완료',
+            description: '내역페이지에서 확인해주세요',
+            onButtonClick: () => {},
+          })
+        }}
+      >
+        Alert 오픈
+      </Button>
+
+      {/* <Alert
+        open
+        title="알럿이 떴습니다."
+        description="안녕하세요"
+        onButtonClick={() => {}}
+      /> */}
+    </div>
   )
 }
 
