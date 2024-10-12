@@ -23,7 +23,11 @@
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
       "@styles/*": ["src/styles/*"],
-      "@shared/*": ["src/components/shared/*"]
+      "@shared/*": ["src/components/shared/*"],
+      "@remote/*": ["src/remote/*"],
+      "@models/*": ["src/models/*"],
+      "@constants/*": ["src/constants/index"],
+      "@mock/*": ["src/mock/*"]
     }
   },
   "include": ["vite.config.ts"]
