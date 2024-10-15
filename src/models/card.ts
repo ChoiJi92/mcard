@@ -3,11 +3,9 @@ export interface Card {
   corpName: string
   tags: string[]
   benefit: string[]
-  promotion?:
-    | {
-        title: string
-        terms: string
-      }
-    | string
+  promotion?: {
+    title: string
+    terms: string
+  }
   payback?: string
 }

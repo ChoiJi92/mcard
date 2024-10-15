@@ -5,7 +5,7 @@ import {
   buttonSizeMap,
   buttonWeakMap,
 } from '../../styles/button'
-import { css } from '@emotion/react'
+import { css, SerializedStyles } from '@emotion/react'
 import styled from '@emotion/styled'
 
 interface ButtonProps {
@@ -14,6 +14,7 @@ interface ButtonProps {
   weak?: boolean
   full?: boolean
   disabled?: boolean
+  css?: SerializedStyles
 }
 
 const Button = styled.button<ButtonProps>(

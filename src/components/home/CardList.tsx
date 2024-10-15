@@ -5,9 +5,16 @@ import { flatten } from 'lodash'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useCallback } from 'react'
 import { Card } from '@/models/card'
-import { QuerySnapshot } from 'firebase/firestore'
+import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
+import Badge from '../shared/Badge'
+import { useNavigate } from 'react-router-dom'
 
 type CardWithId = Card & { id: string }
+
+interface CardData {
+  items: CardWithId[]
+  lastVisible: QueryDocumentSnapshot
+}
 
 const CardList = () => {
   const {
@@ -15,20 +22,17 @@ const CardList = () => {
     hasNextPage = false,
     fetchNextPage,
     isFetching,
-  } = useInfiniteQuery({
+  } = useInfiniteQuery<CardData, Error>({
     queryKey: ['cardList'],
-    queryFn: ({
-      pageParam,
-    }: {
-      pageParam: QuerySnapshot<Card> | undefined
-    }) => {
-      return getCards(pageParam)
+    queryFn: ({ pageParam }) => {
+      return getCards(pageParam as QuerySnapshot<Card> | undefined)
     },
     getNextPageParam: (snapshot) => {
       return snapshot.lastVisible
     },
     initialPageParam: undefined,
   })
+  const navigate = useNavigate()
   const loadMore = useCallback(() => {
     if (!hasNextPage || isFetching) {
       return
@@ -47,17 +51,21 @@ const CardList = () => {
         hasMore={hasNextPage}
         loader={<></>}
         next={loadMore}
+        scrollThreshold={0.9}
       >
-        {cards.map((card, index) => (
-          <ListRow
-            key={card.id}
-            contents={
-              <ListRow.Text title={`${index + 1}위`} subTitle={card.name} />
-            }
-            right={card.payback && <div>{card.payback}</div>}
-            withArrow
-          />
-        ))}
+        <ul>
+          {cards.map((card, index) => (
+            <ListRow
+              key={card.id}
+              contents={
+                <ListRow.Text title={`${index + 1}위`} subTitle={card.name} />
+              }
+              right={card.payback && <Badge label={card.payback} />}
+              withArrow
+              onClick={() => navigate(`/card/${card.id}`)}
+            />
+          ))}
+        </ul>
       </InfiniteScroll>
     </div>
   )
