@@ -7,15 +7,26 @@ import { createPortal } from 'react-dom'
 interface FixedBottomButtonProps {
   label: string
   onClick: () => void
+  disabled?: boolean
 }
 
-const FixedBottomButton = ({ label, onClick }: FixedBottomButtonProps) => {
+const FixedBottomButton = ({
+  label,
+  onClick,
+  disabled,
+}: FixedBottomButtonProps) => {
   const $portalRoot = document.getElementById('root-portal')
   if (!$portalRoot) return null
 
   return createPortal(
     <Container>
-      <Button size="medium" full onClick={onClick} css={buttonStyles}>
+      <Button
+        size="medium"
+        full
+        onClick={onClick}
+        css={buttonStyles}
+        disabled={disabled}
+      >
         {label}
       </Button>
     </Container>,
