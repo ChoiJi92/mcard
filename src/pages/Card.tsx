@@ -6,17 +6,36 @@ import Top from '@/components/shared/Top'
 import { getCard } from '@/remote/card'
 import { css } from '@emotion/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useCallback } from 'react'
+import useUser from '@/hooks/auth/useUser'
+import { useAlertContext } from '@/contexts/AlertContext'
 
 const CardPage = () => {
   const { id = '' } = useParams()
+  const navigate = useNavigate()
   const { data } = useQuery({
     queryKey: ['card', id],
     queryFn: () => getCard(id),
     enabled: !!id,
   })
-  console.log(data)
+  const user = useUser()
+  const { open } = useAlertContext()
+
+  const moveToApply = useCallback(() => {
+    if (user === null) {
+      open({
+        title: '로그인이 필요한 기능입니다.',
+        onButtonClick: () => {
+          navigate('/signin')
+        },
+      })
+      return
+    }
+    navigate(`/apply/${id}`)
+  }, [user, id, open, navigate])
+
   if (!data) return null
 
   const { name, corpName, promotion, tags, benefit } = data
@@ -52,7 +71,7 @@ const CardPage = () => {
           <Text typography="t7">{removeHtmlTags(promotion.terms)}</Text>
         </Flex>
       )}
-      <FixedBottomButton label="신청하기" onClick={() => {}} />
+      <FixedBottomButton label="신청하기" onClick={moveToApply} />
     </div>
   )
 }

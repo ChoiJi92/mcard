@@ -6,6 +6,10 @@ import ScrollToTop from './components/shared/ScrollToTop'
 import SignupPage from './pages/Signup'
 import SigninPage from './pages/Signin'
 import Navbar from './components/shared/Navbar'
+import PrivateRoute from './components/auth/PrivateRoute'
+import ApplyPage from './pages/Apply'
+import ApplyDone from './pages/ApplyDone'
+import { Suspense } from 'react'
 
 function App() {
   return (
@@ -17,6 +21,24 @@ function App() {
         <Route path="/signin" Component={SigninPage} />
         <Route path="/signup" Component={SignupPage} />
         <Route path="/card/:id" Component={CardPage} />
+        <Route
+          path="/apply/:id"
+          element={
+            <PrivateRoute>
+              <Suspense fallback={<></>}>
+                <ApplyPage />
+              </Suspense>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/apply/done"
+          element={
+            <PrivateRoute>
+              <ApplyDone />
+            </PrivateRoute>
+          }
+        />
         <Route path="/test" Component={Test} />
       </Routes>
     </BrowserRouter>

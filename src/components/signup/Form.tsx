@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import Flex from '../shared/Flex'
 import TextField from '../shared/TextField'
 import FixedBottomButton from '../shared/FixedBottomButton'

@@ -15,7 +15,6 @@ const AdBanners = () => {
     queryKey: ['adBanners'],
     queryFn: () => getAdBanners(),
   })
-  console.log(data)
   return (
     <Container>
       <Swiper spaceBetween={8}>
