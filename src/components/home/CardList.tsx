@@ -1,7 +1,7 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query'
 import ListRow from '../shared/ListRow'
 import { getCards } from '@/remote/card'
-import { flatten } from 'lodash'
+import flatten from 'lodash/flatten'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useCallback } from 'react'
 import { Card } from '@/models/card'
@@ -22,7 +22,7 @@ const CardList = () => {
     hasNextPage = false,
     fetchNextPage,
     isFetching,
-  } = useInfiniteQuery<CardData, Error>({
+  } = useSuspenseInfiniteQuery<CardData, Error>({
     queryKey: ['cardList'],
     queryFn: ({ pageParam }) => {
       return getCards(pageParam as QuerySnapshot<Card> | undefined)
@@ -49,7 +49,7 @@ const CardList = () => {
       <InfiniteScroll
         dataLength={cards.length}
         hasMore={hasNextPage}
-        loader={<></>}
+        loader={<ListRow.Skeleton />}
         next={loadMore}
         scrollThreshold={0.9}
       >

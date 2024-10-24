@@ -1,4 +1,3 @@
-import React from 'react'
 import Flex from './Flex'
 import Text from './Text'
 import { css } from '@emotion/react'

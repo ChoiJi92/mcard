@@ -10,7 +10,6 @@ import { useCallback } from 'react'
 
 const MyPage = () => {
   const user = useUser()
-  console.log(user)
   const handleLogout = useCallback(() => {
     signOut(auth)
   }, [])

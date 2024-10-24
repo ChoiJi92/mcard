@@ -10,6 +10,12 @@ import { updateApplyCard } from '@/remote/apply'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
+const STATUS_MESSAGE = {
+  [APPLY_STATUS.COMPLETE]: '카드 신청이 완료되었습니다.',
+  [APPLY_STATUS.PROGRESS]: '카드를 심사중입니다. 잠시만 기다려주세요.',
+  [APPLY_STATUS.READY]: '카드 심사를 준비하고있습니다.',
+}
+
 const ApplyPage = () => {
   const [readyToPoll, setReadyToPoll] = useState(false)
   const user = useUser()
@@ -24,7 +30,11 @@ const ApplyPage = () => {
     cardId: id,
   })
 
-  const { isSuccess, isError } = usePollApplyStatus({
+  const {
+    data: status,
+    isSuccess,
+    isError,
+  } = usePollApplyStatus({
     enabled: readyToPoll,
   })
 
@@ -57,7 +67,7 @@ const ApplyPage = () => {
 
       setReadyToPoll(true)
     }
-  }, [applyCardIsSuccess, data, open])
+  }, [applyCardIsSuccess, data, open, user?.uid, id])
 
   useEffect(() => {
     const handlePollResult = async () => {
@@ -95,7 +105,7 @@ const ApplyPage = () => {
   }
 
   if (readyToPoll || isPending) {
-    return <FullPageLoader message="카드를 신청중입니다." />
+    return <FullPageLoader message={STATUS_MESSAGE[status ?? 'READY']} />
   }
 
   return <Apply onSubmit={mutate} />
